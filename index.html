@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>长截图拼接工具</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .toolbar {
+        position: sticky;
+        top: 0;
+        background: white;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        z-index: 10;
+    }
+
+    input[type=file] {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .tips {
+        margin-top: 10px;
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    #container {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .img-wrapper {
+        background: white;
+        overflow: hidden;
+    }
+
+    .img-wrapper img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="toolbar">
+    <input type="file" id="upload" multiple accept="image/*">
+
+    <div class="tips">
+        1. 支持一次选择多张图片<br>
+        2. 图片会按选择顺序自动排列<br>
+        3. 上传后使用 Safari “整页截图”即可导出长图
+    </div>
+</div>
+
+<div id="container"></div>
+
+<script>
+    const upload = document.getElementById('upload');
+    const container = document.getElementById('container');
+
+    upload.addEventListener('change', (e) => {
+        container.innerHTML = '';
+
+        const files = Array.from(e.target.files);
+
+        files.forEach(file => {
+            const url = URL.createObjectURL(file);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'img-wrapper';
+
+            const img = document.createElement('img');
+            img.src = url;
+
+            wrapper.appendChild(img);
+            container.appendChild(wrapper);
+        });
+
+        window.scrollTo(0, 0);
+    });
+</script>
+
+</body>
+</html>
