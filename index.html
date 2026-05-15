@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>长截图拼接工具</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    width: 100%;
+    background: black;
+    overflow-x: hidden;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    padding: 14px;
+}
+.toolbar.hidden {
+    display: none;
+}
+.upload-btn {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    background: black;
+    color: white;
+}
+#upload {
+    display: none;
+}
+#container {
+    width: 100%;
+}
+.img-wrapper {
+    width: 100%;
+    line-height: 0;
+    background: black;
+}
+.img-wrapper img {
+    display: block;
+    width: 100vw;
+    height: auto;
+}
+</style>
+</head>
+<body>
+<div class="toolbar" id="toolbar">
+    <button class="upload-btn" id="uploadBtn">
+        选择图片
+    </button>
+    <input
+        type="file"
+        id="upload"
+        accept="image/*"
+        multiple
+    />
+</div>
+<div id="container"></div>
+<script>
+const upload = document.getElementById('upload');
+const uploadBtn = document.getElementById('uploadBtn');
+const container = document.getElementById('container');
+const toolbar = document.getElementById('toolbar');
+uploadBtn.addEventListener('click', () => {
+    upload.click();
+});
+upload.addEventListener('change', (e) => {
+    container.innerHTML = '';
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+        toolbar.classList.add('hidden');
+    }
+    files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'img-wrapper';
+        const img = document.createElement('img');
+        img.src = url;
+        wrapper.appendChild(img);
+        container.appendChild(wrapper);
+    });
+    window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>
